@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useRef } from "react";
 import PropTypes from "prop-types";
 import Field, { FIELD_TYPES } from "../../components/Field";
 import Select from "../../components/Select";
@@ -8,6 +8,7 @@ const mockContactApi = () => new Promise((resolve) => { setTimeout(resolve, 500)
 
 const Form = ({ onSuccess, onError }) => {
   const [sending, setSending] = useState(false);
+  const formContact = useRef(null);
   const sendContact = useCallback(
     async (evt) => {
       evt.preventDefault();
@@ -16,6 +17,8 @@ const Form = ({ onSuccess, onError }) => {
       try {
         await mockContactApi();
         setSending(false);
+        alert("Message envoyé");
+        formContact.current.reset();
       } catch (err) {
         setSending(false);
         onError(err);
@@ -24,15 +27,15 @@ const Form = ({ onSuccess, onError }) => {
     [onSuccess, onError]
   );
   return (
-    <form onSubmit={sendContact}>
+    <form onSubmit={sendContact} ref={formContact}>
       <div className="row">
         <div className="col">
           <Field placeholder="" label="Nom" />
           <Field placeholder="" label="Prénom" />
           <Select
-            selection={["Personel", "Entreprise"]}
+            selection={["Personnel", "Entreprise"]}
             onChange={() => null}
-            label="Personel / Entreprise"
+            label="Personnel / Entreprise"
             type="large"
             titleEmpty
           />
