@@ -17,7 +17,7 @@ const Form = ({ onSuccess, onError }) => {
       try {
         await mockContactApi();
         setSending(false);
-        alert("Message envoyé");
+        onSuccess();
         formContact.current.reset();
       } catch (err) {
         setSending(false);
@@ -35,7 +35,7 @@ const Form = ({ onSuccess, onError }) => {
           <Select
             selection={["Personnel", "Entreprise"]}
             onChange={() => null}
-            label="Personnel / Entreprise"
+            label="Personel / Entreprise"
             type="large"
             titleEmpty
           />
